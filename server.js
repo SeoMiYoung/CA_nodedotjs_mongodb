@@ -8,11 +8,13 @@ app.listen(8080, () => {
     console.log('http://localhost:8080 에서 서버 실행중')
 })
 
-// 누가 main페이지에 접속 시, '반갑다'를 user에게 응답하시오.
+// 간단 응답
 app.get('/', (요청, 응답) => {
-    응답.send('반갑다')
+    응답.send('기본페이지입니다~')
 })
 
-app.get('/news', (요청, 응답) => {
-    응답.send('오늘의 뉴스입니다~')
+// 페이지를 보여주려면
+app.get('/shop', (요청, 응답) => {
+    // __dirname은 server.js가 담긴 폴더를 의미
+    응답.sendFile(__dirname + '/shop.html')
 })
