@@ -3,6 +3,7 @@ const express = require('express')
 const app = express()
 
 // 서버를 띄우는 코드임
+// 하나의 포트를 오픈하는 코드
 app.listen(8080, () => {
     console.log('http://localhost:8080 에서 서버 실행중')
 })
@@ -12,3 +13,6 @@ app.get('/', (요청, 응답) => {
     응답.send('반갑다')
 })
 
+app.get('/news', (요청, 응답) => {
+    응답.send('오늘의 뉴스입니다~')
+})
