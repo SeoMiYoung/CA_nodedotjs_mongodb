@@ -1,0 +1,2 @@
+# .gitignore 파일에 다음 내용을 추가
+node_modules/
