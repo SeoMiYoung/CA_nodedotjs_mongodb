@@ -2,6 +2,10 @@
 const express = require('express')
 const app = express()
 
+// 정적 폴더 등록
+app.use(express.static(__dirname + '/public'))
+
+
 // 서버를 띄우는 코드임
 // 하나의 포트를 오픈하는 코드
 app.listen(8080, () => {
