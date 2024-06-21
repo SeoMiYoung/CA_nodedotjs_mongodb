@@ -1,3 +1,9 @@
+// 환경변수 사용 위해
+require('dotenv').config()
+
+const DB_URL = process.env.DB_URL
+const PORT = process.env.PORT
+
 // express 라이브러리를 사용하겠다는 의미
 const express = require('express')
 const app = express()
@@ -6,19 +12,20 @@ const app = express()
 app.use(express.static(__dirname + '/public'))
 
 
-// 서버를 띄우는 코드임
-// 하나의 포트를 오픈하는 코드
-app.listen(8080, () => {
-    console.log('http://localhost:8080 에서 서버 실행중')
-})
+// 서버와 mongoDB연결 코드
+const { MongoClient } = require('mongodb')
 
-// 간단 응답
-app.get('/', (요청, 응답) => {
-    응답.send('기본페이지입니다~')
-})
 
-// 페이지를 보여주려면
-app.get('/shop', (요청, 응답) => {
-    // __dirname은 server.js가 담긴 폴더를 의미
-    응답.sendFile(__dirname + '/shop.html')
+let db
+const url = DB_URL
+new MongoClient(url).connect().then((client)=>{
+  console.log('DB연결성공')
+  db = client.db('forum')
+
+  app.listen(PORT, () => {
+    console.log('http://localhost:'+ PORT +'에서 서버 실행중')
+  })
+
+}).catch((err)=>{
+  console.log(err)
 })
