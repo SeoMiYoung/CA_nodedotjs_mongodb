@@ -48,5 +48,5 @@ app.get('/shop', (요청, 응답) => {
 app.get('/list', async (요청, 응답) => {
     let result = await db.collection('shopData').find().toArray()
     // 어짜피 기본 경로는 view폴더로 되어있음 자동으로
-    응답.render('list.ejs')
+    응답.render('list.ejs', { 글목록 : result })
 })
