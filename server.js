@@ -11,6 +11,9 @@ const app = express()
 // 정적 폴더 등록
 app.use(express.static(__dirname + '/public'))
 app.set('view engine', 'ejs')
+// 요청.body쓰기 위해서
+app.use(express.json())
+app.use(express.urlencoded({extended:true}))
 
 // 서버와 mongoDB연결 코드
 const { MongoClient } = require('mongodb')
@@ -49,4 +52,35 @@ app.get('/list', async (요청, 응답) => {
     let result = await db.collection('shopData').find().toArray()
     // 어짜피 기본 경로는 view폴더로 되어있음 자동으로
     응답.render('list.ejs', { 글목록 : result })
+})
+
+app.get('/write', async (요청, 응답) => {
+    응답.render('write.ejs')
+})
+
+app.post('/add', async (요청, 응답) => {
+    // user가 입력한 데이터를 출력하기 위해
+    console.log(요청.body)
+
+    try {
+        // 제목이 비어있을 경우에는 db에 저장하지 마세요.
+        if (요청.body.title == '' ) {
+            응답.send('제목입력 안했는데?')
+        }
+        else {
+            await db.collection('shopData').insertOne({
+                title: 요청.body.title,
+                content: 요청.body.content
+            })
+        
+            // 데이터를 DB에 저장하고 나서, redirect로 다른 페이지 이동
+            응답.redirect('/list')
+        } 
+    } catch(e) {
+        // 어떤 에러인지 출력해보고 싶다면?
+        console.log(e)
+        
+        // [센스] 그냥 응답.send해도 되는데, 500이거 적어주면, 서버 잘못이라고 명시해주는거임
+        응답.status(500).send('서버 자체에 에러났다구요~')
+    }
 })
