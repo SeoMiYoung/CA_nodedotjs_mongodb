@@ -10,7 +10,7 @@ const app = express()
 
 // 정적 폴더 등록
 app.use(express.static(__dirname + '/public'))
-
+app.set('view engine', 'ejs')
 
 // 서버와 mongoDB연결 코드
 const { MongoClient } = require('mongodb')
@@ -23,7 +23,7 @@ new MongoClient(url).connect().then((client)=>{ // 몽고디비 접속
   db = client.db('forum') // forum이라는 데이터베이스에 연결
 
   app.listen(PORT, () => {
-    console.log('http://localhost:'+ PORT +'에서 서버 실행중')
+    console.log('http://localhost:'+ PORT +' 에서 서버 실행중')
   })
 
 }).catch((err)=>{ // 에러나면 이거 띄우기
@@ -42,4 +42,11 @@ app.get('/shop', (요청, 응답) => {
         item: 'shirts',
         num: 1
     })
+})
+
+// 누가 /list로 접속하면 DB의 게시물들 가져오자
+app.get('/list', async (요청, 응답) => {
+    let result = await db.collection('shopData').find().toArray()
+    // 어짜피 기본 경로는 view폴더로 되어있음 자동으로
+    응답.render('list.ejs')
 })
