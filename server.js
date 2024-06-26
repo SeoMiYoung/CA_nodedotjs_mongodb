@@ -16,7 +16,7 @@ app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 
 // 서버와 mongoDB연결 코드
-const { MongoClient } = require('mongodb')
+const { MongoClient, ObjectId } = require('mongodb')
 
 
 let db
@@ -79,8 +79,16 @@ app.post('/add', async (요청, 응답) => {
     } catch(e) {
         // 어떤 에러인지 출력해보고 싶다면?
         console.log(e)
-        
+
         // [센스] 그냥 응답.send해도 되는데, 500이거 적어주면, 서버 잘못이라고 명시해주는거임
         응답.status(500).send('서버 자체에 에러났다구요~')
     }
+})
+
+
+app.get('/detail/:id', async(요청, 응답) => {
+    // collection에 있는 조건에 맞는 가장 첫번째 document만 가져와주세요.
+    let result = await db.collection('shopData').findOne({ _id : new ObjectId(요청.params.id)})
+    console.log(result)
+    응답.render('detail.ejs', {result: result})
 })
