@@ -24,6 +24,22 @@ body {
 }
 .grey-bg {
     background: #eee;
+    a {
+        /* a태그 스타일 없애기 */
+        color: inherit;
+        text-decoration: none;
+    }
+    .edit-container {
+        display: flex;
+        justify-content: flex-end;
+        margin: 20px;
+    }
+    .detail-edit {
+        background-color: #3A4D39;
+        color: #F9EFDB;
+        border-radius: 5px;
+        padding: 5px 10px;
+    }
 }
 .white-bg {
     background: white;

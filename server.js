@@ -87,8 +87,22 @@ app.post('/add', async (요청, 응답) => {
 
 
 app.get('/detail/:id', async(요청, 응답) => {
-    // collection에 있는 조건에 맞는 가장 첫번째 document만 가져와주세요.
-    let result = await db.collection('shopData').findOne({ _id : new ObjectId(요청.params.id)})
-    console.log(result)
-    응답.render('detail.ejs', {result: result})
+    try {
+        // collection에 있는 조건에 맞는 가장 첫번째 document만 가져와주세요.
+        let result = await db.collection('shopData').findOne({ _id : new ObjectId(요청.params.id)})
+        console.log(result)
+        if (result == null) {
+            응답.status(404).send('url에 해당하는 id없음')
+        }
+        else {
+            응답.render('detail.ejs', {result: result})
+        }
+    } catch(e) {
+        // 에러메시지 출력
+        console.log(e)
+        // 그냥 응답.send해줘도 되긴한데, status쓰면 user가 어떤 문제인지 잘 파악 가능
+           // status(5**): 서버문제임
+           // status(4**): user문제임
+        응답.status(404).send('url이 이상해서 에러 발생')
+    }
 })
