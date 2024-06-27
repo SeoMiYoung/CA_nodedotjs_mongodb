@@ -35,7 +35,7 @@ new MongoClient(url).connect().then((client)=>{ // 몽고디비 접속
 
 
 app.get('/', (요청, 응답) => {
-    응답.send('기본 페이지에요~')
+    응답.render('main.ejs')
 })
 
 // 누군가 /shop에 접속하면 DB에 뭔가 저장해보자

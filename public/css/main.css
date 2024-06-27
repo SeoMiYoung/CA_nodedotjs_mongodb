@@ -10,6 +10,14 @@ body {
 }
 .nav a {
     margin-right: 10px;
+
+    /* a태그 스타일 없애기 */
+    color: inherit;
+    text-decoration: none;
+}
+.navTab:hover {
+    /* 링크 위에 마우스 포인터가 위치한 상태 */
+    text-decoration: underline;
 }
 .logo {
     font-weight: bold;
